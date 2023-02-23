@@ -29,9 +29,22 @@ function countrySearch(event) {
     } else if (countryData.length === 0) {
       Notiflix.Notify.failure('Oops, there is no country with that name');
     } else if (countryData.length >= 2 && countryData.length <= 10) {
-      renderCountriesList();
+      renderCountriesList(countryData);
     } else {
-      renderFoundCountry();
+      renderFoundCountry(countryData);
     }
   });
+}
+
+function renderCountriesList(countries) {
+  const countriesMarkup = countries
+    .map(country => {
+      return `<li>
+    <img scr=${country.flags.svg} alt=${country.flags.alt}>
+    <p>${country.name.official}</p>
+    </li>`;
+    })
+    .join('');
+  // refs.countryList.insertAdjacentElement('beforeend', countriesMarkup);
+  refs.countryList.innerHTML(countriesMarkup);
 }
