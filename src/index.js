@@ -31,7 +31,7 @@ function countrySearch(event) {
     } else if (countryData.length >= 2 && countryData.length <= 10) {
       renderCountriesList(countryData);
     } else {
-      renderFoundCountry(countryData);
+      renderCountry(countryData);
     }
   });
 }
@@ -40,11 +40,38 @@ function renderCountriesList(countries) {
   const countriesMarkup = countries
     .map(country => {
       return `<li>
-    <img scr=${country.flags.svg} alt=${country.flags.alt}>
-    <p>${country.name.official}</p>
-    </li>`;
+      <img src="${country.flags.svg}" alt="Flag of ${country.name.official}" width="60">
+         <p>${country.name.official}</p>
+                </li>`;
     })
     .join('');
-  // refs.countryList.insertAdjacentElement('beforeend', countriesMarkup);
-  refs.countryList.innerHTML(countriesMarkup);
+
+  refs.countryList.insertAdjacentHTML('beforeend', countriesMarkup);
+}
+
+function renderCountry(oneCountry) {
+  const countryMarkup = oneCountry
+    .map(country => {
+      return `
+      <ul>
+        <li>
+          <img src="${country.flags.svg}" alt="Flag of ${
+        country.name.official
+      }" width="40">
+          <p>${country.name.official}</p>
+        </li>
+        <li>
+          <p>Capital: ${country.capital}</p>
+        </li>
+        <li>
+          <p>Population: ${country.population}</p>
+        </li>
+        <li>
+          <p>Languages: ${Object.values(country.languages)}</p>
+        </li>
+      </ul>`;
+    })
+    .join('');
+
+  refs.countryInfo.insertAdjacentHTML('beforeend', countryMarkup);
 }
