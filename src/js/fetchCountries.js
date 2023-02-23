@@ -1,11 +1,24 @@
 const BASE_URL = 'https://restcountries.com/v3.1';
 
+// отримання списку країн
 export function fetchCountries(name) {
-  const url = `${BASE_URL}/v3.1/name/${name}`;
+  return fetch(
+    `${BASE_URL}/name/${name}?fields=,name,capital,population,flags,languages`
+  )
+    .then(response => {
+      // // якщо немає відповіді 200 ОК і є 404 - повернути пустий масив
+      // if (!response.ok) {
+      //   if (response.status === 404) {
+      //     return []; // поверненя пустого масиву
+      //   }
+      //   // явно відхиляємо проміс, щоб можна було зловити і обробити помилку
+      //   throw new Error(response.status);
+      // }
 
-  fetch(url)
-    .then(response => response.json())
-    .then(country => {
-      console.log(country);
+      // повертаємо відповідь-список країн у форматі .json
+      return response.json();
+    })
+    .catch(error => {
+      console.error(error);
     });
 }
