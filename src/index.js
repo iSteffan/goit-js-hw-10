@@ -15,25 +15,25 @@ refs.input.addEventListener('input', debounce(countrySearch, DEBOUNCE_DELAY));
 
 function countrySearch(event) {
   const countryName = event.target.value.trim();
-  // cleanHtml(); // очистка списку та інформації
+  clearInfo();
 
-  // перевірка від зворотнього - чи значення НЕ пусте
-  // if (trimmedValue !== '') {
-  // отримання списку країн
-  fetchCountries(countryName).then(countryData => {
-    console.log(countryData);
-    if (countryData.length > 10) {
-      Notiflix.Notify.info(
-        'Too many matches found. Please enter a more specific name.'
-      );
-    } else if (countryData.length === 0) {
-      Notiflix.Notify.failure('Oops, there is no country with that name');
-    } else if (countryData.length >= 2 && countryData.length <= 10) {
-      renderCountriesList(countryData);
-    } else {
-      renderCountry(countryData);
-    }
-  });
+  if (countryName !== '') {
+    fetchCountries(countryName).then(countryData => {
+      console.log(countryData);
+
+      if (countryData.length > 10) {
+        Notiflix.Notify.info(
+          'Too many matches found. Please enter a more specific name.'
+        );
+      } else if (countryData.length === 0) {
+        Notiflix.Notify.failure('Oops, there is no country with that name');
+      } else if (countryData.length >= 2 && countryData.length <= 10) {
+        renderCountriesList(countryData);
+      } else {
+        renderCountry(countryData);
+      }
+    });
+  }
 }
 
 function renderCountriesList(countries) {
@@ -57,21 +57,26 @@ function renderCountry(oneCountry) {
         <li>
           <img src="${country.flags.svg}" alt="Flag of ${
         country.name.official
-      }" width="40">
-          <p>${country.name.official}</p>
+      }" width=50 height=40>
+          <p><b>${country.name.official}</b></p>
         </li>
         <li>
-          <p>Capital: ${country.capital}</p>
+          <p><b>Capital:</b> ${country.capital}</p>
         </li>
         <li>
-          <p>Population: ${country.population}</p>
+          <p><b>Population:</b> ${country.population}</p>
         </li>
         <li>
-          <p>Languages: ${Object.values(country.languages)}</p>
+          <p><b>Languages:</b> ${Object.values(country.languages)}</p>
         </li>
       </ul>`;
     })
     .join('');
 
   refs.countryInfo.insertAdjacentHTML('beforeend', countryMarkup);
+}
+
+function clearInfo() {
+  refs.countryList.innerHTML = '';
+  refs.countryInfo.innerHTML = '';
 }

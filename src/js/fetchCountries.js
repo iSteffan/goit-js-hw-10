@@ -5,8 +5,12 @@ export function fetchCountries(name) {
     `${BASE_URL}/name/${name}?fields=,name,capital,population,flags,languages`
   )
     .then(response => {
-      if (response.status === 404) {
-        return [];
+      if (!response.ok) {
+        if (response.status === 404) {
+          return [];
+        }
+
+        throw new Error(response.status);
       }
 
       return response.json();

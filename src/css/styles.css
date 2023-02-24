@@ -32,4 +32,5 @@ body {
 .country-info li {
   display: flex;
   gap: 20px;
+  align-items: center;
 }
